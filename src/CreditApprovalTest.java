@@ -1,6 +1,7 @@
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.evaluation.NominalPrediction;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.meta.AdaBoostM1;
 import weka.classifiers.pmml.consumer.SupportVectorMachineModel;
@@ -11,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Leslie on 5/5/17.
@@ -40,20 +42,34 @@ public class CreditApprovalTest {
         return evaluation;
     }
 
+    public static double calculateAccuracy(ArrayList predictions) {
+        double correct = 0;
+        double accuracy;
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader dataFile = readDataFile("data/credit_approval_clean.csv");
-        String line = null;
-        int i = 0;
-        try {
-            while(((line = dataFile.readLine()) != null) && i <10) {
-                System.out.println(line);
-                i++;
+        for (int i = 0; i < predictions.size(); i++) {
+            NominalPrediction np = (NominalPrediction) predictions.get(i);
+
+            if (np.actual() == np.predicted()) {
+                correct ++;
             }
         }
-        finally {
-            dataFile.close();
-        }
+        accuracy = correct / predictions.size() * 100;
+        return accuracy;
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader dataFile = readDataFile("data/credit_approval_clean.txt");
+        String line = null;
+//        int i = 0;
+//        try {
+//            while(((line = dataFile.readLine()) != null) && i <10) {
+//                System.out.println(line);
+//                i++;
+//            }
+//        }
+//        finally {
+//            dataFile.close();
+//        }
 
         Instances data = new Instances(dataFile);
         data.setClassIndex(data.numAttributes() - 1);
@@ -77,7 +93,9 @@ public class CreditApprovalTest {
             Evaluation validation = classify(models[j], train, test);
 
             predictions.add(validation.predictions());
-
         }
+
+
+//        System.out.println(Arrays.toString(predictions));
     }
 }
