@@ -4,15 +4,14 @@ import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.NominalPrediction;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.meta.AdaBoostM1;
-import weka.classifiers.pmml.consumer.SupportVectorMachineModel;
 import weka.core.Instances;
 import weka.classifiers.trees.J48;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Leslie on 5/5/17.
@@ -91,6 +90,15 @@ public class CreditApprovalTest {
             ArrayList predictions = new ArrayList();
 
             Evaluation validation = classify(models[j], train, test);
+            System.out.println(MessageFormat.format("Summary of {0} : \n", models[j].getClass().getSimpleName()) +
+                    validation.toSummaryString());
+            System.out.println(MessageFormat.format("Accuracy: {0}%",
+                    String.format("%.2f",validation.pctCorrect())));
+            System.out.println(MessageFormat.format("AUC: {0}",
+                    String.format("%.2f", validation.areaUnderPRC(1))));
+            System.out.println("\n \n");
+
+
 
             predictions.add(validation.predictions());
         }
