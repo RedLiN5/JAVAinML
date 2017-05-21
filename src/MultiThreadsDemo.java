@@ -16,7 +16,7 @@ class RunnableDemo implements Runnable {
         try {
             for (int i = 4; i > 0; i--) {
                 System.out.println("Running" + threadName);
-                Thread.sleep(1000);
+                Thread.sleep(500);
             }
         }catch (InterruptedException e) {
             System.out.println("Thread " + threadName + "interrupted.");
@@ -38,10 +38,13 @@ class RunnableDemo implements Runnable {
 public class MultiThreadsDemo {
 
     public static void main(String args[]) {
+        long startTime = System.currentTimeMillis();
         RunnableDemo R1 = new RunnableDemo("Thread-1");
         R1.start();
 
         RunnableDemo R2 = new RunnableDemo("Thread-2");
         R2.start();
+        long endTime   = System.currentTimeMillis();
+        System.out.println(endTime-startTime);
     }
 }
