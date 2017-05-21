@@ -8,14 +8,14 @@ class RunnableDemo implements Runnable {
 
     RunnableDemo( String name) {
         threadName = name;
-        System.out.println("Creating" + threadName);
+        System.out.println("Creating " + threadName);
     }
 
     public void run() {
-        System.out.println("Running" + threadName);
+        System.out.println("Running " + threadName);
         try {
             for (int i = 4; i > 0; i--) {
-                System.out.println("Running" + threadName);
+                System.out.println("Thread: " + threadName + ", i=" + i);
                 Thread.sleep(500);
             }
         }catch (InterruptedException e) {
@@ -38,13 +38,10 @@ class RunnableDemo implements Runnable {
 public class MultiThreadsDemo {
 
     public static void main(String args[]) {
-        long startTime = System.currentTimeMillis();
         RunnableDemo R1 = new RunnableDemo("Thread-1");
         R1.start();
 
         RunnableDemo R2 = new RunnableDemo("Thread-2");
         R2.start();
-        long endTime   = System.currentTimeMillis();
-        System.out.println(endTime-startTime);
     }
 }
